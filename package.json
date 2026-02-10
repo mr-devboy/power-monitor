@@ -1,0 +1,32 @@
+{
+  "name": "power-monitor",
+  "version": "1.0.0",
+  "description": "Power outage monitoring system with Telegram notifications",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "build": "npm run clean && tsc",
+    "build:ci": "tsc",
+    "start": "node --env-file=.env dist/monitor.js",
+    "start:ci": "node dist/monitor.js",
+    "dev": "npm run build && npm start"
+  },
+  "keywords": [
+    "monitor",
+    "monitoring",
+    "power",
+    "outages",
+    "bot",
+    "telegram",
+    "uptime"
+  ],
+  "author": "Bohdan Yatsenko",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
