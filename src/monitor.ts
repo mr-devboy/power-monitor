@@ -14,7 +14,6 @@ import {
   formatTime,
   loadLastStatus,
   saveLastStatus,
-  sendNotification,
 } from "./helpers.js"
 import type { Host, PowerStatus } from "./types.js"
 
@@ -85,6 +84,34 @@ function generateMessage(
     .join("\n")
 }
 
+async function sendNotification(message: string) {
+  console.log("🌀 Sending notification...")
+
+  const response = await fetch(
+    `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: "HTML",
+      }),
+    }
+  )
+
+  const data = (await response.json()) as {
+    ok: boolean
+    description?: string
+  }
+
+  if (!data.ok) {
+    throw Error(`❌ Sending notification failed: ${data.description}.`)
+  }
+
+  console.log("🟢 Notification sent.")
+}
+
 async function run() {
   if (!IP) throw Error("❌ Missing IP.")
   if (!PORT) throw Error("❌ Missing PORT.")
@@ -110,8 +137,7 @@ async function run() {
       if (isStatusChanged) {
         const message = generateMessage(isOnline, statusChangedAt, lastStatus)
 
-        const delivered = await sendNotification(message)
-        if (!delivered) console.log("⚠️ Saving status anyway.")
+        await sendNotification(message)
 
         lastStatus = {
           isOnline,

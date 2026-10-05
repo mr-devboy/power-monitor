@@ -2,12 +2,7 @@ import * as fs from "node:fs/promises"
 import net, { type TcpSocketConnectOpts } from "node:net"
 import * as path from "node:path"
 
-import {
-  STATUS_ARTIFACT_FILE,
-  TELEGRAM_BOT_TOKEN,
-  TELEGRAM_CHAT_ID,
-  REQUEST_TIMEOUT,
-} from "./constants.js"
+import { STATUS_ARTIFACT_FILE, REQUEST_TIMEOUT } from "./constants.js"
 import type { Host, PowerStatus } from "./types.js"
 
 export function checkIsOnline(
@@ -85,35 +80,4 @@ export function formatTime(timestamp: number): string {
     hour: "2-digit",
     minute: "2-digit",
   })
-}
-
-/** Returns true if the message was delivered. */
-export async function sendNotification(message: string): Promise<boolean> {
-  console.log("🌀 Sending notification...")
-
-  try {
-    const response = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: message,
-          parse_mode: "HTML",
-        }),
-      }
-    )
-
-    if (!response.ok) {
-      const errorData = await response.text()
-      throw new Error(`${response.status} ${errorData}`)
-    }
-
-    console.log("🟢 Notification sent.")
-    return true
-  } catch (error) {
-    console.log("🔴 Notification not sent.", (error as Error).message)
-    return false
-  }
 }
