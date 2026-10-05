@@ -5,6 +5,7 @@ import {
   OFFLINE_CONFIRM_TIMEOUT,
   ONLINE_CONFIRM_TIMEOUT,
   PORT,
+  REQUEST_TIMEOUT,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_CHAT_ID,
 } from "./constants.js"
@@ -97,6 +98,7 @@ async function sendNotification(message: string) {
         text: message,
         parse_mode: "HTML",
       }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT),
     }
   )
 

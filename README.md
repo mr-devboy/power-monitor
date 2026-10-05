@@ -182,7 +182,7 @@ npm run start
 Відредагуй значення у файлі `src/constants.ts`:
 
 ```ts
-export const REQUEST_TIMEOUT = 5 * 1_000 // таймаут TCP-з'єднання
+export const REQUEST_TIMEOUT = 5 * 1_000 // таймаут TCP-з'єднання та запиту до Telegram
 export const CHECK_INTERVAL = 30 * 1_000 // пауза між перевірками
 export const CHECK_DURATION = 3 * 60 * 1_000 // скільки триває один запуск
 export const ONLINE_CONFIRM_TIMEOUT = 1 * 60 * 1_000 // підтвердження появи світла
