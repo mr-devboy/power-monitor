@@ -70,13 +70,13 @@ function generateMessage(
     isOnline
       ? [
           `🔋 <b>Світло з'явилося!</b>`,
-          `👉 <code>${time}</code>`,
-          duration && `\n<i>Не було: ${duration}</i>`,
+          `📍 <code>${time}</code>`,
+          duration && `\n<i>🪫 ${duration}</i>`,
         ]
       : [
           `🪫 <b>Світло зникло!</b>`,
-          `👉 <code>${time}</code>`,
-          duration && `\n<i>Було: ${duration}</i>`,
+          `📍 <code>${time}</code>`,
+          duration && `\n<i>🔋 ${duration}</i>`,
         ]
   )
     .filter(Boolean)
