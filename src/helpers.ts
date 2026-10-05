@@ -89,11 +89,6 @@ export function formatTime(timestamp: number): string {
 
 /** Returns true if the message was delivered. */
 export async function sendNotification(message: string): Promise<boolean> {
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    console.log("❌ Missing telegram bot token or chat id.")
-    return false
-  }
-
   console.log("🌀 Sending notification...")
 
   try {

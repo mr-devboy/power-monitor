@@ -5,6 +5,8 @@ import {
   OFFLINE_CONFIRM_TIMEOUT,
   ONLINE_CONFIRM_TIMEOUT,
   PORT,
+  TELEGRAM_BOT_TOKEN,
+  TELEGRAM_CHAT_ID,
 } from "./constants.js"
 import {
   checkIsOnline,
@@ -86,6 +88,8 @@ function generateMessage(
 async function run() {
   if (!IP) throw Error("❌ Missing IP.")
   if (!PORT) throw Error("❌ Missing PORT.")
+  if (!TELEGRAM_BOT_TOKEN) throw Error("❌ Missing telegram bot token.")
+  if (!TELEGRAM_CHAT_ID) throw Error("❌ Missing telegram chat id.")
 
   const host: Host = { ip: IP, port: PORT }
   const checkStartedAt = Date.now()
