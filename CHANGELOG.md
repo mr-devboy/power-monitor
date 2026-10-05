@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/mr-devboy/power-monitor/compare/v2.0.0...v2.1.0) (2026-10-05)
+
+
+### Features
+
+* extend silent night mode to 22:00-08:00 ([78db0fa](https://github.com/mr-devboy/power-monitor/commit/78db0fa100cad06490698d926c86fe7f0fbcd855))
+
 ## [2.0.0](https://github.com/mr-devboy/power-monitor/compare/v1.1.0...v2.0.0) (2026-10-05)
 
 
