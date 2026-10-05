@@ -56,18 +56,6 @@
 | `PORT`               | Відкритий порт на пристрої          | `8080`                                    |
 | `TELEGRAM_BOT_TOKEN` | Токен бота від BotFather            | `123456789:ABCdefGHI...`                  |
 | `TELEGRAM_CHAT_ID`   | ID чату в Telegram                  | `123456789` або `-123456789` (для каналу) |
-| `PAT`                | Personal Access Token для GitHub    | [Інструкція](#створення-pat)              |
-
-#### Створення PAT
-
-1. Перейдіть в **Settings** → **Developer settings** → **Personal access tokens** → **Fine-grained tokens**.
-2. Натисніть **Generate new token**.
-3. Підтвердіть доступ одним із запропонованих методів, наприклад `Use GitHub Mobile`.
-4. Вкажіть назву токена, наприклад `power-monitor`.
-5. Встановіть термін дії (або `No expiration` на свій розсуд).
-6. Оберіть **Repository access** → `Only select repositories` та оберіть клонований репозиторій.
-7. Натисніть **+ Add permissions** → відмітьте `Read access to metadata` та `Read and Write access to code`.
-8. Натисніть **Generate token** та скопіюйте токен.
 
 ### 6. Налаштування зовнішнього тригера
 
@@ -84,7 +72,16 @@
   - `Content-Type: application/json`
 - **Тіло запиту**: `{"event_type": "check-power"}`
 
-Для тригера можна використати той самий PAT, що й у secrets.
+#### Створення PAT
+
+1. Перейдіть в **Settings** → **Developer settings** → **Personal access tokens** → **Fine-grained tokens**.
+2. Натисніть **Generate new token**.
+3. Підтвердіть доступ одним із запропонованих методів, наприклад `Use GitHub Mobile`.
+4. Вкажіть назву токена, наприклад `power-monitor`.
+5. Встановіть термін дії (або `No expiration` на свій розсуд).
+6. Оберіть **Repository access** → `Only select repositories` та оберіть клонований репозиторій.
+7. Натисніть **+ Add permissions** → відмітьте `Read access to metadata` та `Read and Write access to code`.
+8. Натисніть **Generate token** та скопіюйте токен.
 
 ### 7. Запуск Actions
 
