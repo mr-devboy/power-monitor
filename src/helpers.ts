@@ -56,7 +56,7 @@ export async function loadLastStatus(): Promise<Partial<PowerStatus>> {
   }
 }
 
-export async function saveLastStatus(status: PowerStatus) {
+export async function saveLastStatus(status: Partial<PowerStatus>) {
   console.log("🌀 Saving status...")
 
   await fs.mkdir(path.dirname(STATUS_ARTIFACT_FILE), { recursive: true })
@@ -69,9 +69,7 @@ export async function saveLastStatus(status: PowerStatus) {
   console.log("✅ Saving status finished.")
 }
 
-export function formatDuration(startTimestamp: string, endTimestamp: string) {
-  const startTime = new Date(startTimestamp).getTime()
-  const endTime = new Date(endTimestamp).getTime()
+export function formatDuration(startTime: number, endTime: number) {
   const diffTime = endTime - startTime
 
   const hours = Math.floor(diffTime / (1_000 * 60 * 60))
@@ -83,7 +81,7 @@ export function formatDuration(startTimestamp: string, endTimestamp: string) {
   return `${minutes} хв`
 }
 
-export function formatTime(timestamp: string): string {
+export function formatTime(timestamp: number): string {
   return new Date(timestamp).toLocaleString("uk-UA", {
     timeZone: "Europe/Kyiv",
     hour: "2-digit",
