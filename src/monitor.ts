@@ -84,8 +84,8 @@ function generateMessage(
 }
 
 async function run() {
-  if (!IP) throw Error("Missing IP.")
-  if (!PORT) throw Error("Missing PORT.")
+  if (!IP) throw Error("❌ Missing IP.")
+  if (!PORT) throw Error("❌ Missing PORT.")
 
   const host: Host = { ip: IP, port: PORT }
   const checkStartedAt = Date.now()
@@ -122,6 +122,6 @@ async function run() {
 }
 
 run().catch((error) => {
-  console.error(`❌ ${error.message}`)
-  process.exit(1)
+  console.error(error.message)
+  process.exitCode = 1
 })
