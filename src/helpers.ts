@@ -1,5 +1,6 @@
 import * as fs from "node:fs/promises"
 import net, { type TcpSocketConnectOpts } from "node:net"
+import * as path from "node:path"
 
 import {
   STATUS_ARTIFACT_FILE,
@@ -58,6 +59,7 @@ export async function loadLastStatus(): Promise<Partial<PowerStatus>> {
 export async function saveLastStatus(status: PowerStatus) {
   console.log("🌀 Saving status...")
 
+  await fs.mkdir(path.dirname(STATUS_ARTIFACT_FILE), { recursive: true })
   await fs.writeFile(
     STATUS_ARTIFACT_FILE,
     JSON.stringify(status, null, 2),

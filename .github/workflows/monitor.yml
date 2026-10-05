@@ -22,6 +22,17 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
 
+      - name: Checkout artifacts
+        run: |
+          REMOTE_BRANCH=$(git ls-remote --heads origin artifacts)
+
+          if [ -n "$REMOTE_BRANCH" ]; then
+            git fetch --depth 1 origin artifacts
+            git worktree add --detach artifacts FETCH_HEAD
+          else
+            git worktree add --orphan -b artifacts artifacts
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
@@ -42,20 +53,22 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: npm run start:ci
 
-      - name: Update status artifact
+      - name: Commit updated artifacts
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet artifacts/status.json 2>/dev/null; then
-            git add artifacts/status.json
-            LAST_MESSAGE=$(git log -1 --pretty=format:'%s' 2>/dev/null || echo "")
-            if echo "$LAST_MESSAGE" | grep -q "chore: update status artifact"; then
-              git commit --amend --no-edit
-              git push --force-with-lease
-            else
-              git commit -m "chore: update status artifact [skip ci]"
-              git push
-            fi
-          else
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git -C artifacts add --all
+
+          if git -C artifacts diff --cached --quiet; then
             echo "No changes to commit"
+            exit 0
           fi
+
+          if git -C artifacts rev-parse --verify --quiet HEAD; then
+            git -C artifacts commit --amend --no-edit
+          else
+            git -C artifacts commit -m "chore: update artifacts"
+          fi
+
+          git push --force origin "$(git -C artifacts rev-parse HEAD):refs/heads/artifacts"
