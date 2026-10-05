@@ -88,5 +88,5 @@ export function checkIsNight() {
     hour: "numeric",
     hour12: false,
   })
-  return Number(hours) >= 0 && Number(hours) < 8
+  return Number(hours) >= 22 || Number(hours) < 8
 }
