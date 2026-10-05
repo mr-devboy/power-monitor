@@ -70,15 +70,13 @@ export async function saveLastStatus(status: Partial<PowerStatus>) {
 }
 
 export function formatDuration(startTime: number, endTime: number) {
-  const diffTime = endTime - startTime
+  const minutes = Math.floor((endTime - startTime) / (1_000 * 60))
 
-  const hours = Math.floor(diffTime / (1_000 * 60 * 60))
-  const minutes = Math.floor((diffTime % (1_000 * 60 * 60)) / (1_000 * 60))
-
-  if (hours > 0) {
-    return `${hours} год ${minutes} хв`
-  }
-  return `${minutes} хв`
+  return new Intl.DurationFormat("uk", { style: "short" }).format({
+    days: Math.floor(minutes / (60 * 24)),
+    hours: Math.floor(minutes / 60) % 24,
+    minutes: minutes % 60,
+  })
 }
 
 export function formatTime(timestamp: number): string {
