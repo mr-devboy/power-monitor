@@ -12,6 +12,7 @@ import {
   TELEGRAM_CHAT_ID,
 } from "./constants.js"
 import {
+  checkIsNight,
   checkIsOnline,
   formatDuration,
   formatTime,
@@ -100,6 +101,7 @@ async function sendNotification(message: string, retries = 0) {
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
           parse_mode: "HTML",
+          disable_notification: checkIsNight(),
         }),
         signal: AbortSignal.timeout(REQUEST_TIMEOUT),
       }

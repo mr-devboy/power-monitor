@@ -81,3 +81,12 @@ export function formatTime(timestamp: number): string {
     minute: "2-digit",
   })
 }
+
+export function checkIsNight() {
+  const hours = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/Kyiv",
+    hour: "numeric",
+    hour12: false,
+  })
+  return Number(hours) >= 0 && Number(hours) < 8
+}
