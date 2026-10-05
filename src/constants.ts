@@ -8,7 +8,11 @@ export const STATUS_ARTIFACT_FILE = path.join(
 )
 
 export const REQUEST_TIMEOUT = 5 * 1_000 // 5 seconds
+export const RETRIES_MAX_COUNT = 5
+export const RETRIES_TIMEOUT = 5 * 1_000 // 5 seconds
+
 export const CHECK_INTERVAL = 30 * 1_000 // 30 seconds
 export const CHECK_DURATION = 3 * 60 * 1_000 // 3 minutes
+
 export const ONLINE_CONFIRM_TIMEOUT = 1 * 60 * 1_000 // 1 minute
 export const OFFLINE_CONFIRM_TIMEOUT = 3 * 60 * 1_000 // 3 minutes

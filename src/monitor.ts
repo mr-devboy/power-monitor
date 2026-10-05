@@ -6,6 +6,8 @@ import {
   ONLINE_CONFIRM_TIMEOUT,
   PORT,
   REQUEST_TIMEOUT,
+  RETRIES_MAX_COUNT,
+  RETRIES_TIMEOUT,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_CHAT_ID,
 } from "./constants.js"
@@ -85,33 +87,48 @@ function generateMessage(
     .join("\n")
 }
 
-async function sendNotification(message: string) {
+async function sendNotification(message: string, retries = 0) {
   console.log("🌀 Sending notification...")
 
-  const response = await fetch(
-    `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: "HTML",
-      }),
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  try {
+    const response = await fetch(
+      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: "HTML",
+        }),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+      }
+    )
+
+    const data = (await response.json()) as {
+      ok: boolean
+      description?: string
     }
+
+    if (!data.ok) throw Error(data.description)
+
+    console.log("🟢 Notification sent.")
+    return
+  } catch (error) {
+    console.error(
+      `❌ Sending notification failed: ${(error as Error).message}.`
+    )
+  }
+
+  if (retries < RETRIES_MAX_COUNT) {
+    console.log("🌀 Try sending notification again...")
+    await new Promise((resolve) => setTimeout(resolve, RETRIES_TIMEOUT))
+    return await sendNotification(message, retries + 1)
+  }
+
+  throw Error(
+    `❌ Sending notification failed after ${RETRIES_MAX_COUNT} retries.`
   )
-
-  const data = (await response.json()) as {
-    ok: boolean
-    description?: string
-  }
-
-  if (!data.ok) {
-    throw Error(`❌ Sending notification failed: ${data.description}.`)
-  }
-
-  console.log("🟢 Notification sent.")
 }
 
 async function run() {
