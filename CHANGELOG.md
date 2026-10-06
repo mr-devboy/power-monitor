@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/mr-devboy/power-monitor/compare/v2.1.0...v2.2.0) (2026-10-06)
+
+
+### Features
+
+* show lightning in the title and status battery next to the time ([c7aef01](https://github.com/mr-devboy/power-monitor/commit/c7aef0158a6164479d47ad195abff203d4b275d7))
+
+
+### Bug Fixes
+
+* move duration emoji out of italic to render it in chat preview ([2943da5](https://github.com/mr-devboy/power-monitor/commit/2943da50fa93e63a9f84af1862962fdcd72c581e))
+
 ## [2.1.0](https://github.com/mr-devboy/power-monitor/compare/v2.0.0...v2.1.0) (2026-10-05)
 
 
