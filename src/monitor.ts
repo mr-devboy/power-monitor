@@ -74,13 +74,13 @@ function generateMessage(
   return (
     isOnline
       ? [
-          `🔋 <b>Світло з'явилося!</b>`,
-          `📍 <code>${time}</code>`,
+          `⚡️ <b>Світло з'явилося!</b>`,
+          `🔋 <code>${time}</code>`,
           duration && `\n🪫 <i>${duration}</i>`,
         ]
       : [
-          `🪫 <b>Світло зникло!</b>`,
-          `📍 <code>${time}</code>`,
+          `⚡️ <b>Світло зникло!</b>`,
+          `🪫 <code>${time}</code>`,
           duration && `\n🔋 <i>${duration}</i>`,
         ]
   )
