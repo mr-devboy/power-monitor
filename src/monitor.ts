@@ -21,12 +21,15 @@ import {
 } from "./helpers.js"
 import type { Host, PowerStatus } from "./types.js"
 
-async function checkPower(host: Host) {
-  console.log("🌀 Checking power...")
+async function checkPower(host: Host, wasOnline?: boolean) {
+  const { isOnline, reason } = await checkIsOnline(host)
 
-  const isOnline = await checkIsOnline(host)
-
-  isOnline ? console.log("🔋 Power is on!") : console.log("🪫 Power is off!")
+  // Log only when the result differs from the previous check
+  if (isOnline !== wasOnline) {
+    isOnline
+      ? console.log("🔋 Power is on!")
+      : console.log(`🪫 Power is off! Connection failed: ${reason}.`)
+  }
 
   return isOnline
 }
@@ -44,7 +47,7 @@ async function confirmPowerStatus(
   ) {
     await new Promise((resolve) => setTimeout(resolve, CHECK_INTERVAL))
 
-    const isOnlineYet = await checkIsOnline(host)
+    const { isOnline: isOnlineYet } = await checkIsOnline(host)
 
     if (isOnline !== isOnlineYet) {
       console.log("⚠️ Power status flapped back, ignoring change.")
@@ -143,9 +146,15 @@ async function run() {
   const checkStartedAt = Date.now()
 
   let lastStatus = await loadLastStatus()
+  let lastCheck: boolean | undefined
+  let checksCount = 0
+
+  console.log("🌀 Checking power...")
 
   while (Date.now() - checkStartedAt < CHECK_DURATION) {
-    const isOnline = await checkPower(host)
+    const isOnline = await checkPower(host, lastCheck)
+    lastCheck = isOnline
+    checksCount++
 
     if (isOnline !== lastStatus.isOnline) {
       const statusChangedAt = Date.now()
@@ -170,6 +179,8 @@ async function run() {
 
     await new Promise((resolve) => setTimeout(resolve, CHECK_INTERVAL))
   }
+
+  console.log(`✅ Checking power finished: ${checksCount} checks.`)
 }
 
 run().catch((error) => {

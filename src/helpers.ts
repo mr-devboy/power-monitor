@@ -9,16 +9,15 @@ export function checkIsOnline(
   { ip, port }: Host,
   timeout: number = REQUEST_TIMEOUT
 ) {
-  return new Promise<boolean>((resolve) => {
+  return new Promise<{ isOnline: boolean; reason?: string }>((resolve) => {
     const socket = new net.Socket()
     let settled = false
 
-    const finish = (result: boolean, reason?: string) => {
+    const finish = (isOnline: boolean, reason?: string) => {
       if (settled) return
       settled = true
       socket.destroy()
-      if (reason) console.log(`❌ Connection failed: ${reason}.`)
-      resolve(result)
+      resolve({ isOnline, reason })
     }
 
     socket.setTimeout(timeout)
