@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/mr-devboy/power-monitor/compare/v2.2.0...v2.2.1) (2026-10-06)
+
+
+### Bug Fixes
+
+* log power status only when it changes ([99d2c71](https://github.com/mr-devboy/power-monitor/commit/99d2c710268bc764617743b18dc594d823d2e409))
+
 ## [2.2.0](https://github.com/mr-devboy/power-monitor/compare/v2.1.0...v2.2.0) (2026-10-06)
 
 
