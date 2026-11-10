@@ -2,6 +2,13 @@ import * as path from "node:path"
 
 export const { IP, PORT, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = process.env
 
+export const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`
+export const TELEGRAM_UPDATE_CHAT_TITLE =
+  process.env.TELEGRAM_UPDATE_CHAT_TITLE !== "false"
+
+export const POWER_ON_ICON = "🔋"
+export const POWER_OFF_ICON = "🪫"
+
 export const STATUS_ARTIFACT_FILE = path.join(
   process.cwd(),
   "artifacts/status.json"

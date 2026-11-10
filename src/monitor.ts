@@ -5,11 +5,15 @@ import {
   OFFLINE_CONFIRM_TIMEOUT,
   ONLINE_CONFIRM_TIMEOUT,
   PORT,
+  POWER_OFF_ICON,
+  POWER_ON_ICON,
   REQUEST_TIMEOUT,
   RETRIES_MAX_COUNT,
   RETRIES_TIMEOUT,
+  TELEGRAM_API,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_CHAT_ID,
+  TELEGRAM_UPDATE_CHAT_TITLE,
 } from "./constants.js"
 import {
   checkIsNight,
@@ -78,37 +82,60 @@ function generateMessage(
     isOnline
       ? [
           `⚡️ <b>Світло з'явилося!</b>`,
-          `🔋 <code>${time}</code>`,
-          duration && `\n🪫 <i>${duration}</i>`,
+          `${POWER_ON_ICON} <code>${time}</code>`,
+          duration && `\n${POWER_OFF_ICON} <i>${duration}</i>`,
         ]
       : [
           `⚡️ <b>Світло зникло!</b>`,
-          `🪫 <code>${time}</code>`,
-          duration && `\n🔋 <i>${duration}</i>`,
+          `${POWER_OFF_ICON} <code>${time}</code>`,
+          duration && `\n${POWER_ON_ICON} <i>${duration}</i>`,
         ]
   )
     .filter(Boolean)
     .join("\n")
 }
 
+async function updateChatTitle(isOnline: boolean) {
+  if (!TELEGRAM_UPDATE_CHAT_TITLE) return
+
+  try {
+    const chat = await fetch(
+      `${TELEGRAM_API}/getChat?chat_id=${TELEGRAM_CHAT_ID}`
+    )
+    const { result } = (await chat.json()) as { result: { title: string } }
+    const title = result.title.replace(
+      new RegExp(`^(${POWER_ON_ICON}|${POWER_OFF_ICON}) `, "u"),
+      ""
+    )
+
+    await fetch(`${TELEGRAM_API}/setChatTitle`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        title: `${isOnline ? POWER_ON_ICON : POWER_OFF_ICON} ${title}`,
+      }),
+    })
+  } catch (error) {
+    console.error(`❌ Updating chat title failed: ${(error as Error).message}.`)
+  }
+}
+
 async function sendNotification(message: string, retries = 0) {
   console.log("🌀 Sending notification...")
 
   try {
-    const response = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: message,
-          parse_mode: "HTML",
-          disable_notification: checkIsNight(),
-        }),
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
-      }
-    )
+    const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: "HTML",
+        disable_notification: checkIsNight(),
+      }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+    })
 
     const data = (await response.json()) as {
       ok: boolean
@@ -167,6 +194,7 @@ async function run() {
       if (isStatusChanged) {
         const message = generateMessage(isOnline, statusChangedAt, lastStatus)
 
+        await updateChatTitle(isOnline)
         await sendNotification(message)
 
         lastStatus = {
