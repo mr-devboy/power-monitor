@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/mr-devboy/power-monitor/compare/v2.2.1...v2.3.0) (2026-11-10)
+
+
+### Features
+
+* show power status in chat title ([00fc137](https://github.com/mr-devboy/power-monitor/commit/00fc1373010fcb921b63761b1a93fae721a5838f))
+
 ## [2.2.1](https://github.com/mr-devboy/power-monitor/compare/v2.2.0...v2.2.1) (2026-10-06)
 
 
