@@ -1,6 +1,6 @@
 {
   "name": "power-monitor",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Power outage monitoring system with Telegram notifications",
   "type": "module",
   "scripts": {
