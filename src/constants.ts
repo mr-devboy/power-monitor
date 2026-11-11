@@ -8,6 +8,8 @@ export const TELEGRAM_UPDATE_CHAT_TITLE =
 
 export const POWER_ON_ICON = "🔋"
 export const POWER_OFF_ICON = "🪫"
+export const CHAT_TITLE_ON_ICON = "🟢"
+export const CHAT_TITLE_OFF_ICON = "🔴"
 
 export const STATUS_ARTIFACT_FILE = path.join(
   process.cwd(),

@@ -1,4 +1,6 @@
 import {
+  CHAT_TITLE_OFF_ICON,
+  CHAT_TITLE_ON_ICON,
   CHECK_DURATION,
   CHECK_INTERVAL,
   IP,
@@ -104,7 +106,7 @@ async function updateChatTitle(isOnline: boolean) {
     )
     const { result } = (await chat.json()) as { result: { title: string } }
     const title = result.title.replace(
-      new RegExp(`^(${POWER_ON_ICON}|${POWER_OFF_ICON}) `, "u"),
+      new RegExp(`^(${CHAT_TITLE_ON_ICON}|${CHAT_TITLE_OFF_ICON})\\s*`, "u"),
       ""
     )
 
@@ -113,7 +115,7 @@ async function updateChatTitle(isOnline: boolean) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: TELEGRAM_CHAT_ID,
-        title: `${isOnline ? POWER_ON_ICON : POWER_OFF_ICON} ${title}`,
+        title: `${isOnline ? CHAT_TITLE_ON_ICON : CHAT_TITLE_OFF_ICON} ${title}`,
       }),
     })
   } catch (error) {
