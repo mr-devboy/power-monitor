@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/mr-devboy/power-monitor/compare/v2.3.0...v2.4.0) (2026-11-11)
+
+
+### Features
+
+* change chat title icons ([6428be7](https://github.com/mr-devboy/power-monitor/commit/6428be7ae5b43562f5e8171b49aece9a8e6f7c56))
+
 ## [2.3.0](https://github.com/mr-devboy/power-monitor/compare/v2.2.1...v2.3.0) (2026-11-10)
 
 
